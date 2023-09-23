@@ -1,6 +1,6 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { MessagefiProgram } from "../target/types/messagefi_program";
+import { MessagefiProgram } from "../types/messagefi_program";
 
 describe("messagefi-program", () => {
   // Configure the client to use the local cluster.

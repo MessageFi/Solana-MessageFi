@@ -20,7 +20,11 @@ pub mod messagefi_program {
         Ok(())
     }
 
-    pub fn vote_msg_with_sol(ctx: Context<CreateMsg>, sol_num: u64) -> Result<()> {
+    pub fn vote_msg_with_sol(_ctx: Context<CreateMsg>, _sol_num: u64) -> Result<()> {
+        Ok(())
+    }
+
+    pub fn add_comments(_ctx: Context<CreateComment>) -> Result<()> {
         Ok(())
     }
 }
@@ -57,5 +61,25 @@ pub struct MsgSummaryData {
 
 #[account]
 pub struct MsgData {
+    pub data: String,
+}
+
+#[derive(Accounts)]
+pub struct CreateComment<'info> {
+    #[account(
+    init,
+    payer = user,
+    space = 8 + 1024, seeds = [b"msg", user.key().as_ref()], bump
+    )]
+    pub comment_data: Account<'info, CommentData>,
+    #[account(mut, seeds = [b"summary"], bump)]
+    pub msg_summary: Account<'info, MsgSummaryData>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[account]
+pub struct CommentData {
     pub data: String,
 }

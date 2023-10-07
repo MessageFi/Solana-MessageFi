@@ -1,5 +1,8 @@
+mod errors;
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::system_instruction;
 use anchor_lang::Key;
+use errors::MyError;
 
 declare_id!("DMyQ8keGbLzXNyqhRx8j6X4SDyB3EXG1ea94CfTu6tfR");
 
@@ -9,18 +12,53 @@ pub mod messagefi_program {
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         msg!("Initialize ping program");
-        ctx.accounts.msg_summary.msg_counter = 0;
+        ctx.accounts.msg_summary.msg_id = 0;
         Ok(())
     }
 
     pub fn create_msg(ctx: Context<CreateMsg>, data: String) -> Result<()> {
+        ctx.accounts.msg_summary.msg_id += 1;
         ctx.accounts.msg_data.data = data.clone();
-        ctx.accounts.msg_summary.msg_counter += 1;
-        msg!("create msg id:{}, msg data:{}, public key:{}", ctx.accounts.msg_summary.msg_counter, data, ctx.accounts.msg_data.key());
+        ctx.accounts.msg_data.msg_id = ctx.accounts.msg_summary.msg_id;
+        msg!(
+            "CREATE_MSG msg_id:{}, msg data:{}, msg public key:{}",
+            ctx.accounts.msg_summary.msg_id,
+            data,
+            ctx.accounts.msg_data.key()
+        );
         Ok(())
     }
 
-    pub fn vote_msg_with_sol(_ctx: Context<CreateMsg>, _sol_num: u64) -> Result<()> {
+    pub fn vote_msg_with_sol(ctx: Context<VoteMsg>, amount: u64) -> Result<()> {
+        if ctx.accounts.current_program_acc.key != ctx.program_id {
+            return err!(MyError::AccInconsistent);
+        }
+        let from_account = &ctx.accounts.user;
+        // Create the transfer instruction
+        let transfer_instruction =
+            system_instruction::transfer(from_account.key, &ctx.program_id, amount);
+
+        // Invoke the transfer instruction
+        anchor_lang::solana_program::program::invoke_signed(
+            &transfer_instruction,
+            &[
+                from_account.to_account_info(),
+                ctx.accounts.current_program_acc.clone(),
+                ctx.accounts.system_program.to_account_info(),
+            ],
+            &[],
+        )?;
+
+        ctx.accounts.msg_data.vote_amount += amount;
+        ctx.accounts.vote_data.amount += amount;
+        ctx.accounts.vote_summary.amount += amount;
+        msg!(
+            "VOTE_MSG_WITH_SOL msg_id:{}, vote_amount:{}, user_key:{}",
+            ctx.accounts.msg_data.msg_id,
+            amount,
+            ctx.accounts.user.key
+        );
+
         Ok(())
     }
 
@@ -44,7 +82,7 @@ pub struct CreateMsg<'info> {
     #[account(
         init,
         payer = user,
-        space = 8 + 1024, seeds = [b"msg", user.key().as_ref()], bump
+        space = 8 + 1024 + 8, seeds = [b"msg", user.key().as_ref(), &(msg_summary.msg_id + 1).to_le_bytes()], bump
     )]
     pub msg_data: Account<'info, MsgData>,
     #[account(mut, seeds = [b"summary"], bump)]
@@ -56,12 +94,44 @@ pub struct CreateMsg<'info> {
 
 #[account]
 pub struct MsgSummaryData {
-    pub msg_counter: u64,
+    pub msg_id: u64,
 }
 
 #[account]
 pub struct MsgData {
+    pub msg_id: u64,
     pub data: String,
+    pub vote_amount: u64,
+}
+
+#[derive(Accounts)]
+pub struct VoteMsg<'info> {
+    #[account(
+        init,
+        payer = user,
+        space = 8 + 8, seeds = [b"votemsg", user.key().as_ref()], bump
+    )]
+    pub vote_data: Account<'info, VoteData>,
+    #[account(mut, seeds = [b"vote_summary", &(msg_data.msg_id).to_le_bytes()], bump)]
+    pub vote_summary: Account<'info, VoteSummary>,
+    #[account(mut, seeds = [b"msg", user.key().as_ref(), &(msg_data.msg_id).to_le_bytes()], bump)]
+    pub msg_data: Account<'info, MsgData>,
+    /// CHECK
+    #[account(mut)]
+    pub current_program_acc: AccountInfo<'info>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[account]
+pub struct VoteData {
+    pub amount: u64,
+}
+
+#[account]
+pub struct VoteSummary {
+    pub amount: u64,
 }
 
 #[derive(Accounts)]

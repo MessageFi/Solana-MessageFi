@@ -34,16 +34,16 @@ test output:
 Your counter address tMfmx7gwhaUJ96uLZQeWoxmAhVg54i5LLQhRioduRQg
 Your wallet address 7dMmVQh6yT7WwEWqVZ4DjpArSuaC75KhcmhugUMw6fsD
 
-
   messagefi-program
-Your transaction signature 4Xzy3pTCQyrnNF83mzQRJUefN6LBUe5qK7J4QZ1mPz5SvjYbyW7V4Er51RETpD4SKcVwCMWMG4E42HNLBG2ZvuTo
-msg summary account state:  { msgCounter: <BN: 0> }
-    ✔ Is initialized! (405ms)
-creat msg! Your transaction signature 2QKLvTzkEGiNjHxRfNhRHUiXmS7gMPSREjed61GYTh5X76pEM2W2BLWtRxPeTuoapMWL4nveMFxv3estuNrH5EWi
-msg summary account state:  { msgCounter: <BN: 1> }
-msg account state:  { data: 'my first msg' }
-    ✔ creat msg! (464ms)
+Your transaction signature 4jcLAAmAVPQCkNPRGK7wWfV4MpGWhESFgfZayycFGcmUNqE4BCyBMm2Upyhkjmtg76z2vihJ4mTwHar5se5HGqAh
+msg summary account state:  { msgId: <BN: 0> }
+    ✔ Is initialized! (449ms)
+summaryStatusAccountBefore["msgId"]:  <Buffer 01 00 00 00 00 00 00 00>
+creat msg! Your transaction signature FHejRUJMxLHCzh7FTqV6ooU9xwQkBK8c4E4XqXo3eAB9opMdLqj4fx54uH6LRRt74MYx4i2BLTpZmKncqerY6Wy
+msg summary account state:  { msgId: <BN: 1> }
+msg account state:  { msgId: <BN: 1>, data: 'my first msg', voteAmount: <BN: 0> }
+    ✔ creat msg! (468ms)
 
 
-  2 passing (870ms)
+  2 passing (919ms)
 ```

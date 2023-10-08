@@ -1,411 +1,395 @@
 export type MessagefiProgram = {
-  "version": "0.1.0",
-  "name": "messagefi_program",
-  "instructions": [
+  version: "0.1.0";
+  name: "messagefi_program";
+  instructions: [
     {
-      "name": "initialize",
-      "accounts": [
+      name: "initialize";
+      accounts: [
         {
-          "name": "msgSummary",
-          "isMut": true,
-          "isSigner": false
+          name: "msgSummary";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+          name: "user";
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": []
+      ];
+      args: [];
     },
     {
-      "name": "createMsg",
-      "accounts": [
+      name: "createMsg";
+      accounts: [
         {
-          "name": "msgData",
-          "isMut": true,
-          "isSigner": false
+          name: "msgData";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "msgSummary",
-          "isMut": true,
-          "isSigner": false
+          name: "msgSummary";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+          name: "user";
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": [
+      ];
+      args: [
         {
-          "name": "data",
-          "type": "string"
+          name: "data";
+          type: "string";
         }
-      ]
+      ];
     },
     {
-      "name": "voteMsgWithSol",
-      "accounts": [
+      name: "voteMsgWithSol";
+      accounts: [
         {
-          "name": "voteData",
-          "isMut": true,
-          "isSigner": false
+          name: "voteData";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "voteSummary",
-          "isMut": true,
-          "isSigner": false
+          name: "msgData";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "msgData",
-          "isMut": true,
-          "isSigner": false
+          name: "msgSummary";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "currentProgramAcc",
-          "isMut": true,
-          "isSigner": false,
-          "docs": [
-            "CHECK"
-          ]
+          name: "user";
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": [
+      ];
+      args: [
         {
-          "name": "amount",
-          "type": "u64"
+          name: "amount";
+          type: "u64";
         }
-      ]
+      ];
     },
     {
-      "name": "addComments",
-      "accounts": [
+      name: "addComments";
+      accounts: [
         {
-          "name": "commentData",
-          "isMut": true,
-          "isSigner": false
+          name: "commentData";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "msgSummary",
-          "isMut": true,
-          "isSigner": false
+          name: "msgSummary";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+          name: "user";
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": []
+      ];
+      args: [];
     }
-  ],
-  "accounts": [
+  ];
+  accounts: [
     {
-      "name": "msgSummaryData",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "msgSummaryData";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "msgId",
-            "type": "u64"
+            name: "msgId";
+            type: "u64";
           }
-        ]
-      }
+        ];
+      };
     },
     {
-      "name": "msgData",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "msgData";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "msgId",
-            "type": "u64"
+            name: "msgId";
+            type: "u64";
           },
           {
-            "name": "data",
-            "type": "string"
+            name: "data";
+            type: "string";
           },
           {
-            "name": "voteAmount",
-            "type": "u64"
+            name: "voteAmount";
+            type: "u64";
           }
-        ]
-      }
+        ];
+      };
     },
     {
-      "name": "voteData",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "voteData";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "amount",
-            "type": "u64"
+            name: "amount";
+            type: "u64";
           }
-        ]
-      }
+        ];
+      };
     },
     {
-      "name": "voteSummary",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "voteSummary";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "amount",
-            "type": "u64"
+            name: "amount";
+            type: "u64";
           }
-        ]
-      }
+        ];
+      };
     },
     {
-      "name": "commentData",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "commentData";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "data",
-            "type": "string"
+            name: "data";
+            type: "string";
           }
-        ]
-      }
+        ];
+      };
     }
-  ],
-  "errors": [
+  ];
+  errors: [
     {
-      "code": 6000,
-      "name": "AccInconsistent",
-      "msg": "account inconsistent"
+      code: 6000;
+      name: "AccInconsistent";
+      msg: "account inconsistent";
     }
-  ]
+  ];
 };
 
 export const IDL: MessagefiProgram = {
-  "version": "0.1.0",
-  "name": "messagefi_program",
-  "instructions": [
+  version: "0.1.0",
+  name: "messagefi_program",
+  instructions: [
     {
-      "name": "initialize",
-      "accounts": [
+      name: "initialize",
+      accounts: [
         {
-          "name": "msgSummary",
-          "isMut": true,
-          "isSigner": false
+          name: "msgSummary",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+          name: "user",
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": []
+      args: [],
     },
     {
-      "name": "createMsg",
-      "accounts": [
+      name: "createMsg",
+      accounts: [
         {
-          "name": "msgData",
-          "isMut": true,
-          "isSigner": false
+          name: "msgData",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "msgSummary",
-          "isMut": true,
-          "isSigner": false
+          name: "msgSummary",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+          name: "user",
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "data",
-          "type": "string"
-        }
-      ]
+          name: "data",
+          type: "string",
+        },
+      ],
     },
     {
-      "name": "voteMsgWithSol",
-      "accounts": [
+      name: "voteMsgWithSol",
+      accounts: [
         {
-          "name": "voteData",
-          "isMut": true,
-          "isSigner": false
+          name: "voteData",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "voteSummary",
-          "isMut": true,
-          "isSigner": false
+          name: "msgData",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "msgData",
-          "isMut": true,
-          "isSigner": false
+          name: "msgSummary",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "currentProgramAcc",
-          "isMut": true,
-          "isSigner": false,
-          "docs": [
-            "CHECK"
-          ]
+          name: "user",
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
         },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
       ],
-      "args": [
+      args: [
         {
-          "name": "amount",
-          "type": "u64"
-        }
-      ]
+          name: "amount",
+          type: "u64",
+        },
+      ],
     },
     {
-      "name": "addComments",
-      "accounts": [
+      name: "addComments",
+      accounts: [
         {
-          "name": "commentData",
-          "isMut": true,
-          "isSigner": false
+          name: "commentData",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "msgSummary",
-          "isMut": true,
-          "isSigner": false
+          name: "msgSummary",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+          name: "user",
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": []
-    }
+      args: [],
+    },
   ],
-  "accounts": [
+  accounts: [
     {
-      "name": "msgSummaryData",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "msgSummaryData",
+      type: {
+        kind: "struct",
+        fields: [
           {
-            "name": "msgId",
-            "type": "u64"
-          }
-        ]
-      }
+            name: "msgId",
+            type: "u64",
+          },
+        ],
+      },
     },
     {
-      "name": "msgData",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "msgData",
+      type: {
+        kind: "struct",
+        fields: [
           {
-            "name": "msgId",
-            "type": "u64"
+            name: "msgId",
+            type: "u64",
           },
           {
-            "name": "data",
-            "type": "string"
+            name: "data",
+            type: "string",
           },
           {
-            "name": "voteAmount",
-            "type": "u64"
-          }
-        ]
-      }
+            name: "voteAmount",
+            type: "u64",
+          },
+        ],
+      },
     },
     {
-      "name": "voteData",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "voteData",
+      type: {
+        kind: "struct",
+        fields: [
           {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
+            name: "amount",
+            type: "u64",
+          },
+        ],
+      },
     },
     {
-      "name": "voteSummary",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "voteSummary",
+      type: {
+        kind: "struct",
+        fields: [
           {
-            "name": "amount",
-            "type": "u64"
-          }
-        ]
-      }
+            name: "amount",
+            type: "u64",
+          },
+        ],
+      },
     },
     {
-      "name": "commentData",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "commentData",
+      type: {
+        kind: "struct",
+        fields: [
           {
-            "name": "data",
-            "type": "string"
-          }
-        ]
-      }
-    }
+            name: "data",
+            type: "string",
+          },
+        ],
+      },
+    },
   ],
-  "errors": [
+  errors: [
     {
-      "code": 6000,
-      "name": "AccInconsistent",
-      "msg": "account inconsistent"
-    }
-  ]
+      code: 6000,
+      name: "AccInconsistent",
+      msg: "account inconsistent",
+    },
+  ],
 };

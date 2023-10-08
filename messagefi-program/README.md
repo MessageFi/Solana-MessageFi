@@ -34,16 +34,24 @@ test output:
 Your counter address tMfmx7gwhaUJ96uLZQeWoxmAhVg54i5LLQhRioduRQg
 Your wallet address 7dMmVQh6yT7WwEWqVZ4DjpArSuaC75KhcmhugUMw6fsD
 
+
   messagefi-program
-Your transaction signature 4jcLAAmAVPQCkNPRGK7wWfV4MpGWhESFgfZayycFGcmUNqE4BCyBMm2Upyhkjmtg76z2vihJ4mTwHar5se5HGqAh
+Your transaction signature 4rLSqqdoGRoMqTERCNBuKZ866iXSDzBim9wEw3NY25tmp3Bn7mkAeJ6rAqUa7yuLFZWqQbDd7vPDmDLtDZEZGhNr
 msg summary account state:  { msgId: <BN: 0> }
-    ✔ Is initialized! (449ms)
+    ✔ Is initialized! (256ms)
 summaryStatusAccountBefore["msgId"]:  <Buffer 01 00 00 00 00 00 00 00>
-creat msg! Your transaction signature FHejRUJMxLHCzh7FTqV6ooU9xwQkBK8c4E4XqXo3eAB9opMdLqj4fx54uH6LRRt74MYx4i2BLTpZmKncqerY6Wy
+creat msg! Your transaction signature 3MDvLMCKtbhmZZBfUBJ9fmiLwJ34x8cF5M4p7AdLa99wWUYLr64c6hk4H2a7zz5hYkoR6kN3K1nAh3AQ1uA37Phx
 msg summary account state:  { msgId: <BN: 1> }
 msg account state:  { msgId: <BN: 1>, data: 'my first msg', voteAmount: <BN: 0> }
-    ✔ creat msg! (468ms)
+
+start vote 1000000000 lamports for this msg!=============
+vote msg! Your transaction signature 4GuaFN2EzJnhrBRvXfL9au5qJ8A5YGSexCKskPzRPugLdUabbmh8JRZYPib5RX5r8Ucq5mbZpR9Kp2SDorRFWqRi
+msg account state after vote:  { msgId: <BN: 1>, data: 'my first msg', voteAmount: <BN: 3b9aca00> } total vote num:  1000000000
+vote account state:  { amount: <BN: 3b9aca00> } account:  F6AiUmVT2TjCU2vK4z1wjqfAkV4TDDQ8EPcTqqJS9MWa ' vote number:  1000000000
+    ✔ creat msg! (948ms)
 
 
-  2 passing (919ms)
+  2 passing (1s)
+
+✨  Done in 2.29s.
 ```

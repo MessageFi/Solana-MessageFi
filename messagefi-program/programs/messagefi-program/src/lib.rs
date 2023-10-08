@@ -2,6 +2,7 @@ mod errors;
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::system_instruction;
 use anchor_lang::Key;
+#[allow(unused_imports)]
 use errors::MyError;
 
 declare_id!("DMyQ8keGbLzXNyqhRx8j6X4SDyB3EXG1ea94CfTu6tfR");
@@ -11,7 +12,7 @@ pub mod messagefi_program {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        msg!("Initialize ping program");
+        msg!("Initialize messagefi program");
         ctx.accounts.msg_summary.msg_id = 0;
         Ok(())
     }
@@ -19,6 +20,7 @@ pub mod messagefi_program {
     pub fn create_msg(ctx: Context<CreateMsg>, data: String) -> Result<()> {
         ctx.accounts.msg_summary.msg_id += 1;
         ctx.accounts.msg_data.data = data.clone();
+        ctx.accounts.msg_data.vote_amount = 0;
         ctx.accounts.msg_data.msg_id = ctx.accounts.msg_summary.msg_id;
         msg!(
             "CREATE_MSG msg_id:{}, msg data:{}, msg public key:{}",
@@ -30,20 +32,18 @@ pub mod messagefi_program {
     }
 
     pub fn vote_msg_with_sol(ctx: Context<VoteMsg>, amount: u64) -> Result<()> {
-        if ctx.accounts.current_program_acc.key != ctx.program_id {
-            return err!(MyError::AccInconsistent);
-        }
+        msg!("vote_msg_with_sol 11111111");
         let from_account = &ctx.accounts.user;
+        let to: &AccountInfo = ctx.accounts.msg_summary.as_ref();
         // Create the transfer instruction
-        let transfer_instruction =
-            system_instruction::transfer(from_account.key, &ctx.program_id, amount);
+        let transfer_instruction = system_instruction::transfer(from_account.key, to.key, amount);
 
         // Invoke the transfer instruction
         anchor_lang::solana_program::program::invoke_signed(
             &transfer_instruction,
             &[
                 from_account.to_account_info(),
-                ctx.accounts.current_program_acc.clone(),
+                to.clone(),
                 ctx.accounts.system_program.to_account_info(),
             ],
             &[],
@@ -51,7 +51,6 @@ pub mod messagefi_program {
 
         ctx.accounts.msg_data.vote_amount += amount;
         ctx.accounts.vote_data.amount += amount;
-        ctx.accounts.vote_summary.amount += amount;
         msg!(
             "VOTE_MSG_WITH_SOL msg_id:{}, vote_amount:{}, user_key:{}",
             ctx.accounts.msg_data.msg_id,
@@ -109,16 +108,13 @@ pub struct VoteMsg<'info> {
     #[account(
         init,
         payer = user,
-        space = 8 + 8, seeds = [b"votemsg", user.key().as_ref()], bump
+        space = 8 + 8, seeds = [b"votemsg", user.key().as_ref(), &(msg_data.msg_id).to_le_bytes()], bump
     )]
     pub vote_data: Account<'info, VoteData>,
-    #[account(mut, seeds = [b"vote_summary", &(msg_data.msg_id).to_le_bytes()], bump)]
-    pub vote_summary: Account<'info, VoteSummary>,
     #[account(mut, seeds = [b"msg", user.key().as_ref(), &(msg_data.msg_id).to_le_bytes()], bump)]
     pub msg_data: Account<'info, MsgData>,
-    /// CHECK
-    #[account(mut)]
-    pub current_program_acc: AccountInfo<'info>,
+    #[account(mut, seeds = [b"summary"], bump)]
+    pub msg_summary: Account<'info, MsgSummaryData>,
     #[account(mut)]
     pub user: Signer<'info>,
     pub system_program: Program<'info, System>,

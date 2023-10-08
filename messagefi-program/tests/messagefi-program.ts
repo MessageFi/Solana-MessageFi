@@ -1,7 +1,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { MessagefiProgram } from "../types/messagefi_program";
-import {BN} from "@coral-xyz/anchor";
+import { BN } from "@coral-xyz/anchor";
 
 describe("messagefi-program", () => {
   // Configure the client to use the local cluster.
@@ -42,26 +42,23 @@ describe("messagefi-program", () => {
   });
 
   it("creat msg!", async () => {
+    // seeds = [b"summary"]
     let [summaryAccount] = anchor.web3.PublicKey.findProgramAddressSync(
       [Buffer.from("summary")],
       program.programId
     );
-    //     #[account(
-      //         init,
-      //         payer = user,
-      //         space = 8 + 1024 + 8, seeds = [b"msg", user.key().as_ref(), &(msg_summary.msg_id + 1).to_le_bytes()], bump
-      //     )]
-      //     pub msg_data: Account<'info, MsgData>,
-      const summaryStatusAccountBefore = await program.account.msgSummaryData.fetch(
-          summaryAccount
-      );
-      let msgIdBuff = summaryStatusAccountBefore["msgId"].add(new BN(1)).toBuffer("le", 8);
-      console.log("summaryStatusAccountBefore[\"msgId\"]: ", msgIdBuff);
+    const summaryStatusAccountBefore =
+      await program.account.msgSummaryData.fetch(summaryAccount);
+    let msgIdBuff = summaryStatusAccountBefore["msgId"]
+      .add(new BN(1))
+      .toBuffer("le", 8);
+    console.log('summaryStatusAccountBefore["msgId"]: ', msgIdBuff);
+    // seeds = [b"msg", user.key().as_ref(), &(msg_summary.msg_id + 1).to_le_bytes()]
     let [msgAccount] = anchor.web3.PublicKey.findProgramAddressSync(
       [
-          anchor.utils.bytes.utf8.encode('msg'),
-          provider.wallet.publicKey.toBuffer(),
-          msgIdBuff,
+        anchor.utils.bytes.utf8.encode("msg"),
+        provider.wallet.publicKey.toBuffer(),
+        msgIdBuff,
       ],
       program.programId
     );
@@ -78,14 +75,51 @@ describe("messagefi-program", () => {
     console.log("creat msg! Your transaction signature", tx);
 
     // Fetch the state struct from the network.
-    const summaryStatusAccount = await program.account.msgSummaryData.fetch(
+    let summaryStatusAccount = await program.account.msgSummaryData.fetch(
       summaryAccount
     );
     console.log("msg summary account state: ", summaryStatusAccount);
 
-    const msgInfoAccount = await program.account.msgData.fetch(
-      msgAccount
-    );
+    let msgInfoAccount = await program.account.msgData.fetch(msgAccount);
     console.log("msg account state: ", msgInfoAccount);
+
+    console.log("\nstart vote 1000000000 lamports for this msg!=============");
+    // seeds = [b"votemsg", user.key().as_ref(), &(msg_data.msg_id).to_le_bytes()]
+    msgIdBuff = summaryStatusAccount["msgId"].toBuffer("le", 8);
+    let [voteAccount] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("votemsg"), provider.wallet.publicKey.toBuffer(), msgIdBuff],
+      program.programId
+    );
+    const voteTx = await program.methods
+      .voteMsgWithSol(new BN(1_000_000_000))
+      .accounts({
+        voteData: voteAccount,
+        msgData: msgAccount,
+        msgSummary: summaryAccount,
+        user: user,
+        systemProgram: anchor.web3.SystemProgram.programId,
+      })
+      .signers([])
+      .rpc();
+
+    console.log("vote msg! Your transaction signature", voteTx);
+
+    msgInfoAccount = await program.account.msgData.fetch(msgAccount);
+    console.log(
+      "msg account state after vote: ",
+      msgInfoAccount,
+      "total vote num: ",
+      msgInfoAccount["voteAmount"].toNumber()
+    );
+
+    let voteAccountState = await program.account.voteData.fetch(voteAccount);
+    console.log(
+      "vote account state: ",
+      voteAccountState,
+      "account: ",
+      voteAccount.toBase58(),
+      "' vote number: ",
+      voteAccountState["amount"].toNumber()
+    );
   });
 });

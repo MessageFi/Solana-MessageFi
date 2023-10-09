@@ -121,5 +121,31 @@ describe("messagefi-program", () => {
       "' vote number: ",
       voteAccountState["amount"].toNumber()
     );
+
+    console.log(
+      "\nstart comment for msgId:",
+      msgInfoAccount["msgId"].toNumber(),
+      "============="
+    );
+    let [commentAccount] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("comment"), provider.wallet.publicKey.toBuffer(), msgIdBuff],
+      program.programId
+    );
+    const addCommentTx = await program.methods
+      .addComments("Good message!")
+      .accounts({
+        commentData: commentAccount,
+        msgData: msgAccount,
+        user: user,
+        systemProgram: anchor.web3.SystemProgram.programId,
+      })
+      .signers([])
+      .rpc();
+
+    console.log("comment msg! Your transaction signature", addCommentTx);
+    let commentInfoAccount = await program.account.commentData.fetch(
+      commentAccount
+    );
+    console.log("comment account state: ", commentInfoAccount);
   });
 });

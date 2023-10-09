@@ -61,7 +61,14 @@ pub mod messagefi_program {
         Ok(())
     }
 
-    pub fn add_comments(_ctx: Context<CreateComment>) -> Result<()> {
+    pub fn add_comments(ctx: Context<CreateComment>, comment_data: String) -> Result<()> {
+        ctx.accounts.comment_data.data = comment_data;
+        msg!(
+            "ADD_COMMENTS msg_id:{}, comment data: {}, user_key:{}",
+            ctx.accounts.msg_data.msg_id,
+            ctx.accounts.comment_data.data,
+            ctx.accounts.user.key
+        );
         Ok(())
     }
 }
@@ -135,11 +142,11 @@ pub struct CreateComment<'info> {
     #[account(
     init,
     payer = user,
-    space = 8 + 1024, seeds = [b"msg", user.key().as_ref()], bump
+    space = 8 + 8 + 1024, seeds = [b"comment", user.key().as_ref(), &(msg_data.msg_id).to_le_bytes()], bump
     )]
     pub comment_data: Account<'info, CommentData>,
-    #[account(mut, seeds = [b"summary"], bump)]
-    pub msg_summary: Account<'info, MsgSummaryData>,
+    #[account(mut)]
+    pub msg_data: Account<'info, MsgData>,
     #[account(mut)]
     pub user: Signer<'info>,
     pub system_program: Program<'info, System>,

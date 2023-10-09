@@ -99,7 +99,7 @@ export type MessagefiProgram = {
           isSigner: false;
         },
         {
-          name: "msgSummary";
+          name: "msgData";
           isMut: true;
           isSigner: false;
         },
@@ -114,7 +114,12 @@ export type MessagefiProgram = {
           isSigner: false;
         }
       ];
-      args: [];
+      args: [
+        {
+          name: "commentData";
+          type: "string";
+        }
+      ];
     }
   ];
   accounts: [
@@ -297,7 +302,7 @@ export const IDL: MessagefiProgram = {
           isSigner: false,
         },
         {
-          name: "msgSummary",
+          name: "msgData",
           isMut: true,
           isSigner: false,
         },
@@ -312,7 +317,12 @@ export const IDL: MessagefiProgram = {
           isSigner: false,
         },
       ],
-      args: [],
+      args: [
+        {
+          name: "commentData",
+          type: "string",
+        },
+      ],
     },
   ],
   accounts: [

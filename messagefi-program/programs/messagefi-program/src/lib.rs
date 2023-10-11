@@ -2,7 +2,7 @@ mod errors;
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::system_instruction;
 use anchor_lang::Key;
-#[allow(unused_imports)]
+use anchor_spl::token_interface::Mint;
 use errors::MyError;
 
 declare_id!("DMyQ8keGbLzXNyqhRx8j6X4SDyB3EXG1ea94CfTu6tfR");
@@ -13,7 +13,13 @@ pub mod messagefi_program {
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         msg!("Initialize messagefi program");
+        if ctx.accounts.msg_summary.is_initialized {
+            return Err(MyError::AlreadyInitialized.into());
+        }
         ctx.accounts.msg_summary.msg_id = 0;
+        ctx.accounts.msg_summary.is_initialized = true;
+        ctx.accounts.msg_summary.mfc_coin_id = ctx.accounts.token_program.key();
+
         Ok(())
     }
 
@@ -71,15 +77,39 @@ pub mod messagefi_program {
         );
         Ok(())
     }
+
+    // todo:
+    pub fn withdraw_msg_profit(ctx: Context<CreateComment>, comment_data: String) -> Result<()> {
+        ctx.accounts.comment_data.data = comment_data;
+        msg!(
+            "ADD_COMMENTS msg_id:{}, comment data: {}, user_key:{}",
+            ctx.accounts.msg_data.msg_id,
+            ctx.accounts.comment_data.data,
+            ctx.accounts.user.key
+        );
+        Ok(())
+    }
+
+    // todo:
+    pub fn swap(ctx: Context<CreateComment>, comment_data: String) -> Result<()> {
+        ctx.accounts.comment_data.data = comment_data;
+        msg!(
+            "ADD_COMMENTS msg_id:{}, comment data: {}, user_key:{}",
+            ctx.accounts.msg_data.msg_id,
+            ctx.accounts.comment_data.data,
+            ctx.accounts.user.key
+        );
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
-    #[account(init, payer = user, space = 8 + 8, seeds = [b"summary"], bump)]
-    // #[account(init, payer = user, space = 8 + 8, seeds = [], bump)]
+    #[account(init, payer = user, space = 8 + 1 + 8 + 32, seeds = [b"summary"], bump)]
     pub msg_summary: Account<'info, MsgSummaryData>,
     #[account(mut)]
     pub user: Signer<'info>,
+    pub token_program: Box<InterfaceAccount<'info, Mint>>,
     pub system_program: Program<'info, System>,
 }
 
@@ -100,7 +130,9 @@ pub struct CreateMsg<'info> {
 
 #[account]
 pub struct MsgSummaryData {
+    pub is_initialized: bool,
     pub msg_id: u64,
+    pub mfc_coin_id: Pubkey,
 }
 
 #[account]

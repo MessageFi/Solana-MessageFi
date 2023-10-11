@@ -16,6 +16,11 @@ export type MessagefiProgram = {
           isSigner: true;
         },
         {
+          name: "tokenProgram";
+          isMut: false;
+          isSigner: false;
+        },
+        {
           name: "systemProgram";
           isMut: false;
           isSigner: false;
@@ -120,6 +125,68 @@ export type MessagefiProgram = {
           type: "string";
         }
       ];
+    },
+    {
+      name: "withdrawMsgProfit";
+      accounts: [
+        {
+          name: "commentData";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "msgData";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "user";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        }
+      ];
+      args: [
+        {
+          name: "commentData";
+          type: "string";
+        }
+      ];
+    },
+    {
+      name: "swap";
+      accounts: [
+        {
+          name: "commentData";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "msgData";
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: "user";
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
+        }
+      ];
+      args: [
+        {
+          name: "commentData";
+          type: "string";
+        }
+      ];
     }
   ];
   accounts: [
@@ -129,8 +196,16 @@ export type MessagefiProgram = {
         kind: "struct";
         fields: [
           {
+            name: "isInitialized";
+            type: "bool";
+          },
+          {
             name: "msgId";
             type: "u64";
+          },
+          {
+            name: "mfcCoinId";
+            type: "publicKey";
           }
         ];
       };
@@ -195,6 +270,11 @@ export type MessagefiProgram = {
   errors: [
     {
       code: 6000;
+      name: "AlreadyInitialized";
+      msg: "already initialized";
+    },
+    {
+      code: 6001;
       name: "AccInconsistent";
       msg: "account inconsistent";
     }
@@ -217,6 +297,11 @@ export const IDL: MessagefiProgram = {
           name: "user",
           isMut: true,
           isSigner: true,
+        },
+        {
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
         },
         {
           name: "systemProgram",
@@ -324,6 +409,68 @@ export const IDL: MessagefiProgram = {
         },
       ],
     },
+    {
+      name: "withdrawMsgProfit",
+      accounts: [
+        {
+          name: "commentData",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "msgData",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "user",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "commentData",
+          type: "string",
+        },
+      ],
+    },
+    {
+      name: "swap",
+      accounts: [
+        {
+          name: "commentData",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "msgData",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "user",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "commentData",
+          type: "string",
+        },
+      ],
+    },
   ],
   accounts: [
     {
@@ -332,8 +479,16 @@ export const IDL: MessagefiProgram = {
         kind: "struct",
         fields: [
           {
+            name: "isInitialized",
+            type: "bool",
+          },
+          {
             name: "msgId",
             type: "u64",
+          },
+          {
+            name: "mfcCoinId",
+            type: "publicKey",
           },
         ],
       },
@@ -398,6 +553,11 @@ export const IDL: MessagefiProgram = {
   errors: [
     {
       code: 6000,
+      name: "AlreadyInitialized",
+      msg: "already initialized",
+    },
+    {
+      code: 6001,
       name: "AccInconsistent",
       msg: "account inconsistent",
     },

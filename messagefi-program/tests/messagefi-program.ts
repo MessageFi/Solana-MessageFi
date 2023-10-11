@@ -1,7 +1,13 @@
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
+import { Program, web3 } from "@coral-xyz/anchor";
 import { MessagefiProgram } from "../types/messagefi_program";
 import { BN } from "@coral-xyz/anchor";
+import {
+  createMint,
+  createAssociatedTokenAccount,
+  mintTo,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token";
 
 describe("messagefi-program", () => {
   // Configure the client to use the local cluster.
@@ -11,6 +17,7 @@ describe("messagefi-program", () => {
 
   const program = anchor.workspace
     .MessagefiProgram as Program<MessagefiProgram>;
+
   // const summaryAccount = anchor.web3.Keypair.generate();
   let [summaryAccount] = anchor.web3.PublicKey.findProgramAddressSync(
     [Buffer.from("summary")],
@@ -21,14 +28,43 @@ describe("messagefi-program", () => {
 
   const user = provider.wallet.publicKey;
   console.log("Your wallet address", user.toBase58());
+  let mint = new web3.Keypair().publicKey;
+  const payer = new web3.Keypair();
 
-  it("Is initialized!", async () => {
+  it("payer airdrop", async () => {
+    let sig = await program.provider.connection.requestAirdrop(
+      payer.publicKey,
+      1 * anchor.web3.LAMPORTS_PER_SOL
+    );
+    await program.provider.connection.confirmTransaction(sig);
+    let balance = await program.provider.connection.getBalance(payer.publicKey);
+    console.log("payer balance: ", balance);
+  });
+
+  it("create MFC token!", async () => {
+    const fromKp = provider.wallet.publicKey;
+    const toKp = new web3.Keypair();
+    // Create a new mint and initialize it
+    const mintKp = new web3.Keypair();
+    mint = await createMint(
+      program.provider.connection,
+      payer,
+      program.programId,
+      null,
+      9
+    );
+    console.log("create MFC token!111111111 ");
+    console.log("mint token account: ", mint.toBase58());
+  });
+
+  it("initialized messagefi program!", async () => {
     // Add your test here.
     const tx = await program.methods
       .initialize()
       .accounts({
         msgSummary: summaryAccount,
         user,
+        tokenProgram: mint,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
       .rpc();

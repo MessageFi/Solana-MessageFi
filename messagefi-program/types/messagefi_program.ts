@@ -1,565 +1,825 @@
 export type MessagefiProgram = {
-  version: "0.1.0";
-  name: "messagefi_program";
-  instructions: [
+  "version": "0.1.0",
+  "name": "messagefi_program",
+  "instructions": [
     {
-      name: "initialize";
-      accounts: [
+      "name": "initialize",
+      "accounts": [
         {
-          name: "msgSummary";
-          isMut: true;
-          isSigner: false;
+          "name": "msgSummary",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user";
-          isMut: true;
-          isSigner: true;
+          "name": "feeCollector",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "tokenProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "createMsg";
-      accounts: [
+      "name": "createCompetitionRound",
+      "accounts": [
         {
-          name: "msgData";
-          isMut: true;
-          isSigner: false;
+          "name": "msgSummary",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgSummary";
-          isMut: true;
-          isSigner: false;
+          "name": "roundData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user";
-          isMut: true;
-          isSigner: true;
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      ];
-      args: [
-        {
-          name: "data";
-          type: "string";
-        }
-      ];
+      ],
+      "args": []
     },
     {
-      name: "voteMsgWithSol";
-      accounts: [
+      "name": "createMsg",
+      "accounts": [
         {
-          name: "voteData";
-          isMut: true;
-          isSigner: false;
+          "name": "msgData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgData";
-          isMut: true;
-          isSigner: false;
+          "name": "msgSummary",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgSummary";
-          isMut: true;
-          isSigner: false;
+          "name": "roundData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user";
-          isMut: true;
-          isSigner: true;
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      ];
-      args: [
+      ],
+      "args": [
         {
-          name: "amount";
-          type: "u64";
+          "name": "data",
+          "type": "string"
         }
-      ];
+      ]
     },
     {
-      name: "addComments";
-      accounts: [
+      "name": "voteMsgWithSol",
+      "accounts": [
         {
-          name: "commentData";
-          isMut: true;
-          isSigner: false;
+          "name": "voteData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgData";
-          isMut: true;
-          isSigner: false;
+          "name": "msgData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user";
-          isMut: true;
-          isSigner: true;
+          "name": "msgSummary",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "roundData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      ];
-      args: [
+      ],
+      "args": [
         {
-          name: "commentData";
-          type: "string";
+          "name": "amount",
+          "type": "u64"
         }
-      ];
+      ]
     },
     {
-      name: "withdrawMsgProfit";
-      accounts: [
+      "name": "addComments",
+      "accounts": [
         {
-          name: "commentData";
-          isMut: true;
-          isSigner: false;
+          "name": "commentData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgData";
-          isMut: true;
-          isSigner: false;
+          "name": "msgData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user";
-          isMut: true;
-          isSigner: true;
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      ];
-      args: [
+      ],
+      "args": [
         {
-          name: "commentData";
-          type: "string";
+          "name": "commentData",
+          "type": "string"
         }
-      ];
+      ]
     },
     {
-      name: "swap";
-      accounts: [
+      "name": "withdrawRewords",
+      "accounts": [
         {
-          name: "commentData";
-          isMut: true;
-          isSigner: false;
+          "name": "commentData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgData";
-          isMut: true;
-          isSigner: false;
+          "name": "msgData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user";
-          isMut: true;
-          isSigner: true;
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      ];
-      args: [
+      ],
+      "args": [
         {
-          name: "commentData";
-          type: "string";
+          "name": "commentData",
+          "type": "string"
         }
-      ];
+      ]
+    },
+    {
+      "name": "swap",
+      "accounts": [
+        {
+          "name": "commentData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "msgData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "commentData",
+          "type": "string"
+        }
+      ]
     }
-  ];
-  accounts: [
+  ],
+  "accounts": [
     {
-      name: "msgSummaryData";
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "roundData",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "isInitialized";
-            type: "bool";
+            "name": "competitionId",
+            "type": "u64"
           },
           {
-            name: "msgId";
-            type: "u64";
+            "name": "buildCount",
+            "type": "u64"
           },
           {
-            name: "mfcCoinId";
-            type: "publicKey";
-          }
-        ];
-      };
-    },
-    {
-      name: "msgData";
-      type: {
-        kind: "struct";
-        fields: [
-          {
-            name: "msgId";
-            type: "u64";
+            "name": "rewards",
+            "type": "u64"
           },
           {
-            name: "data";
-            type: "string";
+            "name": "totalPopularity",
+            "type": "u64"
           },
           {
-            name: "voteAmount";
-            type: "u64";
+            "name": "roundStartTime",
+            "type": "i64"
+          },
+          {
+            "name": "roundEndTime",
+            "type": "i64"
+          },
+          {
+            "name": "topPopularityMsgId",
+            "type": "u64"
+          },
+          {
+            "name": "topPopularity",
+            "type": "u64"
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "voteData";
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "msgSummaryData",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "amount";
-            type: "u64";
+            "name": "isInitialized",
+            "type": "bool"
+          },
+          {
+            "name": "msgId",
+            "type": "u64"
+          },
+          {
+            "name": "mfcCoinId",
+            "type": "publicKey"
+          },
+          {
+            "name": "totalRewardsPool",
+            "type": "u64"
+          },
+          {
+            "name": "voteFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "rewardsFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "rateToCreator",
+            "type": "u64"
+          },
+          {
+            "name": "rewardsReduceRate",
+            "type": "u64"
+          },
+          {
+            "name": "rewardsReduceRound",
+            "type": "u64"
+          },
+          {
+            "name": "globalCompetitionId",
+            "type": "u64"
+          },
+          {
+            "name": "competitionPeriod",
+            "type": "i64"
+          },
+          {
+            "name": "roundStartTime",
+            "type": "i64"
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "voteSummary";
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "msgData",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "amount";
-            type: "u64";
+            "name": "msgId",
+            "type": "u64"
+          },
+          {
+            "name": "competitionId",
+            "type": "u64"
+          },
+          {
+            "name": "data",
+            "type": "string"
+          },
+          {
+            "name": "voteAmount",
+            "type": "u64"
+          },
+          {
+            "name": "popularity",
+            "type": "u64"
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "commentData";
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "voteData",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "data";
-            type: "string";
+            "name": "amount",
+            "type": "u64"
           }
-        ];
-      };
+        ]
+      }
+    },
+    {
+      "name": "voteSummary",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "commentData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "data",
+            "type": "string"
+          }
+        ]
+      }
     }
-  ];
-  errors: [
+  ],
+  "errors": [
     {
-      code: 6000;
-      name: "AlreadyInitialized";
-      msg: "already initialized";
+      "code": 6000,
+      "name": "AlreadyInitialized",
+      "msg": "already initialized"
     },
     {
-      code: 6001;
-      name: "AccInconsistent";
-      msg: "account inconsistent";
+      "code": 6001,
+      "name": "AccInconsistent",
+      "msg": "account inconsistent"
+    },
+    {
+      "code": 6002,
+      "name": "NewCompetitionNotStarted",
+      "msg": "new competition not stated"
     }
-  ];
+  ]
 };
 
 export const IDL: MessagefiProgram = {
-  version: "0.1.0",
-  name: "messagefi_program",
-  instructions: [
+  "version": "0.1.0",
+  "name": "messagefi_program",
+  "instructions": [
     {
-      name: "initialize",
-      accounts: [
+      "name": "initialize",
+      "accounts": [
         {
-          name: "msgSummary",
-          isMut: true,
-          isSigner: false,
+          "name": "msgSummary",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user",
-          isMut: true,
-          isSigner: true,
+          "name": "feeCollector",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "tokenProgram",
-          isMut: false,
-          isSigner: false,
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
         },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
       ],
-      args: [],
+      "args": []
     },
     {
-      name: "createMsg",
-      accounts: [
+      "name": "createCompetitionRound",
+      "accounts": [
         {
-          name: "msgData",
-          isMut: true,
-          isSigner: false,
+          "name": "msgSummary",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgSummary",
-          isMut: true,
-          isSigner: false,
+          "name": "roundData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user",
-          isMut: true,
-          isSigner: true,
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-        },
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
       ],
-      args: [
-        {
-          name: "data",
-          type: "string",
-        },
-      ],
+      "args": []
     },
     {
-      name: "voteMsgWithSol",
-      accounts: [
+      "name": "createMsg",
+      "accounts": [
         {
-          name: "voteData",
-          isMut: true,
-          isSigner: false,
+          "name": "msgData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgData",
-          isMut: true,
-          isSigner: false,
+          "name": "msgSummary",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgSummary",
-          isMut: true,
-          isSigner: false,
+          "name": "roundData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user",
-          isMut: true,
-          isSigner: true,
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-        },
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
       ],
-      args: [
+      "args": [
         {
-          name: "amount",
-          type: "u64",
-        },
-      ],
+          "name": "data",
+          "type": "string"
+        }
+      ]
     },
     {
-      name: "addComments",
-      accounts: [
+      "name": "voteMsgWithSol",
+      "accounts": [
         {
-          name: "commentData",
-          isMut: true,
-          isSigner: false,
+          "name": "voteData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgData",
-          isMut: true,
-          isSigner: false,
+          "name": "msgData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user",
-          isMut: true,
-          isSigner: true,
+          "name": "msgSummary",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
+          "name": "roundData",
+          "isMut": true,
+          "isSigner": false
         },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
       ],
-      args: [
+      "args": [
         {
-          name: "commentData",
-          type: "string",
-        },
-      ],
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
     },
     {
-      name: "withdrawMsgProfit",
-      accounts: [
+      "name": "addComments",
+      "accounts": [
         {
-          name: "commentData",
-          isMut: true,
-          isSigner: false,
+          "name": "commentData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgData",
-          isMut: true,
-          isSigner: false,
+          "name": "msgData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user",
-          isMut: true,
-          isSigner: true,
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-        },
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
       ],
-      args: [
+      "args": [
         {
-          name: "commentData",
-          type: "string",
-        },
-      ],
+          "name": "commentData",
+          "type": "string"
+        }
+      ]
     },
     {
-      name: "swap",
-      accounts: [
+      "name": "withdrawRewords",
+      "accounts": [
         {
-          name: "commentData",
-          isMut: true,
-          isSigner: false,
+          "name": "commentData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "msgData",
-          isMut: true,
-          isSigner: false,
+          "name": "msgData",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "user",
-          isMut: true,
-          isSigner: true,
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-        },
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
       ],
-      args: [
+      "args": [
         {
-          name: "commentData",
-          type: "string",
-        },
-      ],
+          "name": "commentData",
+          "type": "string"
+        }
+      ]
     },
+    {
+      "name": "swap",
+      "accounts": [
+        {
+          "name": "commentData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "msgData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "commentData",
+          "type": "string"
+        }
+      ]
+    }
   ],
-  accounts: [
+  "accounts": [
     {
-      name: "msgSummaryData",
-      type: {
-        kind: "struct",
-        fields: [
+      "name": "roundData",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "isInitialized",
-            type: "bool",
+            "name": "competitionId",
+            "type": "u64"
           },
           {
-            name: "msgId",
-            type: "u64",
+            "name": "buildCount",
+            "type": "u64"
           },
           {
-            name: "mfcCoinId",
-            type: "publicKey",
+            "name": "rewards",
+            "type": "u64"
           },
-        ],
-      },
+          {
+            "name": "totalPopularity",
+            "type": "u64"
+          },
+          {
+            "name": "roundStartTime",
+            "type": "i64"
+          },
+          {
+            "name": "roundEndTime",
+            "type": "i64"
+          },
+          {
+            "name": "topPopularityMsgId",
+            "type": "u64"
+          },
+          {
+            "name": "topPopularity",
+            "type": "u64"
+          }
+        ]
+      }
     },
     {
-      name: "msgData",
-      type: {
-        kind: "struct",
-        fields: [
+      "name": "msgSummaryData",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "msgId",
-            type: "u64",
+            "name": "isInitialized",
+            "type": "bool"
           },
           {
-            name: "data",
-            type: "string",
+            "name": "msgId",
+            "type": "u64"
           },
           {
-            name: "voteAmount",
-            type: "u64",
+            "name": "mfcCoinId",
+            "type": "publicKey"
           },
-        ],
-      },
+          {
+            "name": "totalRewardsPool",
+            "type": "u64"
+          },
+          {
+            "name": "voteFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "rewardsFeeRate",
+            "type": "u64"
+          },
+          {
+            "name": "rateToCreator",
+            "type": "u64"
+          },
+          {
+            "name": "rewardsReduceRate",
+            "type": "u64"
+          },
+          {
+            "name": "rewardsReduceRound",
+            "type": "u64"
+          },
+          {
+            "name": "globalCompetitionId",
+            "type": "u64"
+          },
+          {
+            "name": "competitionPeriod",
+            "type": "i64"
+          },
+          {
+            "name": "roundStartTime",
+            "type": "i64"
+          }
+        ]
+      }
     },
     {
-      name: "voteData",
-      type: {
-        kind: "struct",
-        fields: [
+      "name": "msgData",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "amount",
-            type: "u64",
+            "name": "msgId",
+            "type": "u64"
           },
-        ],
-      },
+          {
+            "name": "competitionId",
+            "type": "u64"
+          },
+          {
+            "name": "data",
+            "type": "string"
+          },
+          {
+            "name": "voteAmount",
+            "type": "u64"
+          },
+          {
+            "name": "popularity",
+            "type": "u64"
+          }
+        ]
+      }
     },
     {
-      name: "voteSummary",
-      type: {
-        kind: "struct",
-        fields: [
+      "name": "voteData",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "amount",
-            type: "u64",
-          },
-        ],
-      },
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
     },
     {
-      name: "commentData",
-      type: {
-        kind: "struct",
-        fields: [
+      "name": "voteSummary",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "data",
-            type: "string",
-          },
-        ],
-      },
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
     },
+    {
+      "name": "commentData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "data",
+            "type": "string"
+          }
+        ]
+      }
+    }
   ],
-  errors: [
+  "errors": [
     {
-      code: 6000,
-      name: "AlreadyInitialized",
-      msg: "already initialized",
+      "code": 6000,
+      "name": "AlreadyInitialized",
+      "msg": "already initialized"
     },
     {
-      code: 6001,
-      name: "AccInconsistent",
-      msg: "account inconsistent",
+      "code": 6001,
+      "name": "AccInconsistent",
+      "msg": "account inconsistent"
     },
-  ],
+    {
+      "code": 6002,
+      "name": "NewCompetitionNotStarted",
+      "msg": "new competition not stated"
+    }
+  ]
 };

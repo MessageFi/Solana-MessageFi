@@ -12,6 +12,7 @@ declare_id!("DMyQ8keGbLzXNyqhRx8j6X4SDyB3EXG1ea94CfTu6tfR");
 pub mod messagefi_program {
     use super::*;
 
+    /// init program
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         msg!("Initialize messagefi program");
         if ctx.accounts.msg_summary.is_initialized {
@@ -38,6 +39,7 @@ pub mod messagefi_program {
         Ok(())
     }
 
+    /// create a new competition after competition_period expired
     pub fn create_competition_round(ctx: Context<CreateCompetitionRound>) -> Result<()> {
         let current_time = Clock::get().unwrap().unix_timestamp;
         if ctx.accounts.msg_summary.round_start_time + ctx.accounts.msg_summary.competition_period
@@ -64,6 +66,7 @@ pub mod messagefi_program {
         Ok(())
     }
 
+    /// create a message
     pub fn create_msg(ctx: Context<CreateMsg>, data: String) -> Result<()> {
         let current_time = Clock::get().unwrap().unix_timestamp;
         if current_time - ctx.accounts.msg_summary.round_start_time
@@ -92,6 +95,7 @@ pub mod messagefi_program {
         Ok(())
     }
 
+    /// vote sol for a message
     pub fn vote_msg_with_sol(ctx: Context<VoteMsg>, amount: u64) -> Result<()> {
         msg!("vote_msg_with_sol 11111111");
         let from_account = &ctx.accounts.user;
@@ -134,6 +138,7 @@ pub mod messagefi_program {
         Ok(())
     }
 
+    /// add comments for a message
     pub fn add_comments(ctx: Context<CreateComment>, comment_data: String) -> Result<()> {
         ctx.accounts.comment_data.data = comment_data;
         msg!(
@@ -146,6 +151,7 @@ pub mod messagefi_program {
     }
 
     // todo: confirm withdraw amount logic
+    /// withdraw rewards after a competition finish in the time range
     pub fn withdraw_rewords(ctx: Context<WithdrawRewardData>) -> Result<()> {
         if ctx.accounts.msg_data.competition_id != ctx.accounts.round_data.competition_id {
             return Err(MyError::CompetitionIdNotMatched.into());
@@ -193,6 +199,7 @@ pub mod messagefi_program {
     }
 
     // swap mfc coin to sol
+    /// switch <MFC-SOL>, input MFC, out SOL
     pub fn swap(ctx: Context<SwapData>, amount: u64) -> Result<()> {
         if ctx.accounts.from_ata.mint != ctx.accounts.msg_summary.mfc_coin_id
             || ctx.accounts.mfc_pool_acc.mint != ctx.accounts.msg_summary.mfc_coin_id
@@ -272,6 +279,26 @@ pub struct Initialize<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[account]
+pub struct MsgSummaryData {
+    pub is_initialized: bool,
+    pub msg_id: u64,
+    pub mfc_coin_id: Pubkey,
+    pub total_rewards_pool: u64,
+    pub vote_fee_rate: u64,
+    pub rewards_fee_rate: u64,
+    pub rate_to_creator: u64,
+    pub rewards_reduce_rate: u64,
+    pub rewards_reduce_round: u64,
+    // global competition id
+    pub global_competition_id: u64,
+    pub competition_period: i64,
+    pub round_start_time: i64,
+    pub mfc_current_supply: u64,
+    pub mfc_swap_pool_owner: Pubkey,
+    pub sol_pool_amount: u64,
+}
+
 #[derive(Accounts)]
 pub struct CreateCompetitionRound<'info> {
     #[account(mut, seeds = [b"summary"], bump)]
@@ -313,26 +340,6 @@ pub struct CreateMsg<'info> {
 }
 
 #[account]
-pub struct MsgSummaryData {
-    pub is_initialized: bool,
-    pub msg_id: u64,
-    pub mfc_coin_id: Pubkey,
-    pub total_rewards_pool: u64,
-    pub vote_fee_rate: u64,
-    pub rewards_fee_rate: u64,
-    pub rate_to_creator: u64,
-    pub rewards_reduce_rate: u64,
-    pub rewards_reduce_round: u64,
-    // global competition id
-    pub global_competition_id: u64,
-    pub competition_period: i64,
-    pub round_start_time: i64,
-    pub mfc_current_supply: u64,
-    pub mfc_swap_pool_owner: Pubkey,
-    pub sol_pool_amount: u64,
-}
-
-#[account]
 pub struct MsgData {
     pub msg_id: u64,
     pub competition_id: u64,
@@ -365,11 +372,6 @@ pub struct VoteData {
     pub amount: u64,
     pub popularity: u64,
     pub has_withdraw: bool,
-}
-
-#[account]
-pub struct VoteSummary {
-    pub amount: u64,
 }
 
 #[derive(Accounts)]

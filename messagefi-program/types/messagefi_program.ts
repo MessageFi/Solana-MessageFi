@@ -4,6 +4,9 @@ export type MessagefiProgram = {
   "instructions": [
     {
       "name": "initialize",
+      "docs": [
+        "init program"
+      ],
       "accounts": [
         {
           "name": "msgSummary",
@@ -40,6 +43,9 @@ export type MessagefiProgram = {
     },
     {
       "name": "createCompetitionRound",
+      "docs": [
+        "create a new competition after competition_period expired"
+      ],
       "accounts": [
         {
           "name": "msgSummary",
@@ -66,6 +72,9 @@ export type MessagefiProgram = {
     },
     {
       "name": "createMsg",
+      "docs": [
+        "create a message"
+      ],
       "accounts": [
         {
           "name": "msgData",
@@ -102,6 +111,9 @@ export type MessagefiProgram = {
     },
     {
       "name": "voteMsgWithSol",
+      "docs": [
+        "vote sol for a message"
+      ],
       "accounts": [
         {
           "name": "voteData",
@@ -143,6 +155,9 @@ export type MessagefiProgram = {
     },
     {
       "name": "addComments",
+      "docs": [
+        "add comments for a message"
+      ],
       "accounts": [
         {
           "name": "commentData",
@@ -174,6 +189,9 @@ export type MessagefiProgram = {
     },
     {
       "name": "withdrawRewords",
+      "docs": [
+        "withdraw rewards after a competition finish in the time range"
+      ],
       "accounts": [
         {
           "name": "msgData",
@@ -225,6 +243,9 @@ export type MessagefiProgram = {
     },
     {
       "name": "swap",
+      "docs": [
+        "switch <MFC-SOL>, input MFC, out SOL"
+      ],
       "accounts": [
         {
           "name": "fromAta",
@@ -276,46 +297,6 @@ export type MessagefiProgram = {
     }
   ],
   "accounts": [
-    {
-      "name": "roundData",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "competitionId",
-            "type": "u64"
-          },
-          {
-            "name": "buildCount",
-            "type": "u64"
-          },
-          {
-            "name": "rewards",
-            "type": "u64"
-          },
-          {
-            "name": "totalPopularity",
-            "type": "u64"
-          },
-          {
-            "name": "roundStartTime",
-            "type": "i64"
-          },
-          {
-            "name": "roundEndTime",
-            "type": "i64"
-          },
-          {
-            "name": "topPopularityMsgId",
-            "type": "u64"
-          },
-          {
-            "name": "topPopularity",
-            "type": "u64"
-          }
-        ]
-      }
-    },
     {
       "name": "msgSummaryData",
       "type": {
@@ -385,6 +366,46 @@ export type MessagefiProgram = {
       }
     },
     {
+      "name": "roundData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "competitionId",
+            "type": "u64"
+          },
+          {
+            "name": "buildCount",
+            "type": "u64"
+          },
+          {
+            "name": "rewards",
+            "type": "u64"
+          },
+          {
+            "name": "totalPopularity",
+            "type": "u64"
+          },
+          {
+            "name": "roundStartTime",
+            "type": "i64"
+          },
+          {
+            "name": "roundEndTime",
+            "type": "i64"
+          },
+          {
+            "name": "topPopularityMsgId",
+            "type": "u64"
+          },
+          {
+            "name": "topPopularity",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
       "name": "msgData",
       "type": {
         "kind": "struct",
@@ -428,18 +449,6 @@ export type MessagefiProgram = {
           {
             "name": "hasWithdraw",
             "type": "bool"
-          }
-        ]
-      }
-    },
-    {
-      "name": "voteSummary",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
           }
         ]
       }
@@ -517,6 +526,9 @@ export const IDL: MessagefiProgram = {
   "instructions": [
     {
       "name": "initialize",
+      "docs": [
+        "init program"
+      ],
       "accounts": [
         {
           "name": "msgSummary",
@@ -553,6 +565,9 @@ export const IDL: MessagefiProgram = {
     },
     {
       "name": "createCompetitionRound",
+      "docs": [
+        "create a new competition after competition_period expired"
+      ],
       "accounts": [
         {
           "name": "msgSummary",
@@ -579,6 +594,9 @@ export const IDL: MessagefiProgram = {
     },
     {
       "name": "createMsg",
+      "docs": [
+        "create a message"
+      ],
       "accounts": [
         {
           "name": "msgData",
@@ -615,6 +633,9 @@ export const IDL: MessagefiProgram = {
     },
     {
       "name": "voteMsgWithSol",
+      "docs": [
+        "vote sol for a message"
+      ],
       "accounts": [
         {
           "name": "voteData",
@@ -656,6 +677,9 @@ export const IDL: MessagefiProgram = {
     },
     {
       "name": "addComments",
+      "docs": [
+        "add comments for a message"
+      ],
       "accounts": [
         {
           "name": "commentData",
@@ -687,6 +711,9 @@ export const IDL: MessagefiProgram = {
     },
     {
       "name": "withdrawRewords",
+      "docs": [
+        "withdraw rewards after a competition finish in the time range"
+      ],
       "accounts": [
         {
           "name": "msgData",
@@ -738,6 +765,9 @@ export const IDL: MessagefiProgram = {
     },
     {
       "name": "swap",
+      "docs": [
+        "switch <MFC-SOL>, input MFC, out SOL"
+      ],
       "accounts": [
         {
           "name": "fromAta",
@@ -789,46 +819,6 @@ export const IDL: MessagefiProgram = {
     }
   ],
   "accounts": [
-    {
-      "name": "roundData",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "competitionId",
-            "type": "u64"
-          },
-          {
-            "name": "buildCount",
-            "type": "u64"
-          },
-          {
-            "name": "rewards",
-            "type": "u64"
-          },
-          {
-            "name": "totalPopularity",
-            "type": "u64"
-          },
-          {
-            "name": "roundStartTime",
-            "type": "i64"
-          },
-          {
-            "name": "roundEndTime",
-            "type": "i64"
-          },
-          {
-            "name": "topPopularityMsgId",
-            "type": "u64"
-          },
-          {
-            "name": "topPopularity",
-            "type": "u64"
-          }
-        ]
-      }
-    },
     {
       "name": "msgSummaryData",
       "type": {
@@ -898,6 +888,46 @@ export const IDL: MessagefiProgram = {
       }
     },
     {
+      "name": "roundData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "competitionId",
+            "type": "u64"
+          },
+          {
+            "name": "buildCount",
+            "type": "u64"
+          },
+          {
+            "name": "rewards",
+            "type": "u64"
+          },
+          {
+            "name": "totalPopularity",
+            "type": "u64"
+          },
+          {
+            "name": "roundStartTime",
+            "type": "i64"
+          },
+          {
+            "name": "roundEndTime",
+            "type": "i64"
+          },
+          {
+            "name": "topPopularityMsgId",
+            "type": "u64"
+          },
+          {
+            "name": "topPopularity",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
       "name": "msgData",
       "type": {
         "kind": "struct",
@@ -941,18 +971,6 @@ export const IDL: MessagefiProgram = {
           {
             "name": "hasWithdraw",
             "type": "bool"
-          }
-        ]
-      }
-    },
-    {
-      "name": "voteSummary",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
           }
         ]
       }

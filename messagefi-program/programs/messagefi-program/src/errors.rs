@@ -18,4 +18,8 @@ pub enum MyError {
     RewardAlreadyWithdraw,
     #[msg("token authority not matched")]
     TokenAuthorityNotMatched,
+    #[msg("mint inconsistent")]
+    MintInconsistent,
+    #[msg("owner inconsistent")]
+    OwnerInconsistent,
 }

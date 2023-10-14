@@ -2,7 +2,7 @@ mod errors;
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::system_instruction;
 use anchor_lang::Key;
-use anchor_spl::token::{mint_to, MintTo, TokenAccount};
+use anchor_spl::token::{self, mint_to, MintTo, Token, TokenAccount, Transfer as SplTransfer};
 use anchor_spl::token_interface::Mint;
 use errors::MyError;
 
@@ -17,6 +17,9 @@ pub mod messagefi_program {
         if ctx.accounts.msg_summary.is_initialized {
             return Err(MyError::AlreadyInitialized.into());
         }
+        if ctx.accounts.mfc_swap_pool.mint != ctx.accounts.token_program.key() {
+            return Err(MyError::MintInconsistent.into());
+        }
         ctx.accounts.msg_summary.msg_id = 0;
         ctx.accounts.msg_summary.is_initialized = true;
         ctx.accounts.msg_summary.mfc_coin_id = ctx.accounts.token_program.key();
@@ -29,6 +32,8 @@ pub mod messagefi_program {
         ctx.accounts.msg_summary.global_competition_id = 1;
         ctx.accounts.msg_summary.competition_period = 86400;
         ctx.accounts.msg_summary.round_start_time = Clock::get().unwrap().unix_timestamp;
+        ctx.accounts.msg_summary.mfc_swap_pool_owner = ctx.accounts.mfc_swap_pool.owner;
+        ctx.accounts.msg_summary.sol_pool_amount = 0;
 
         Ok(())
     }
@@ -45,7 +50,9 @@ pub mod messagefi_program {
 
         ctx.accounts.round_data.competition_id = ctx.accounts.msg_summary.global_competition_id;
         // 300 w
-        ctx.accounts.round_data.rewards = 3 * 10_u64.pow(6 + 9);
+        let round_mfc_supply = 3 * 10_u64.pow(6 + 9);
+        ctx.accounts.round_data.rewards = round_mfc_supply;
+        ctx.accounts.msg_summary.mfc_current_supply += round_mfc_supply;
         ctx.accounts.round_data.build_count = 0;
         ctx.accounts.round_data.total_popularity = 0;
         ctx.accounts.round_data.round_start_time = current_time;
@@ -91,7 +98,6 @@ pub mod messagefi_program {
         let to: &AccountInfo = ctx.accounts.msg_summary.as_ref();
         // Create the transfer instruction
         let transfer_instruction = system_instruction::transfer(from_account.key, to.key, amount);
-
         // Invoke the transfer instruction
         anchor_lang::solana_program::program::invoke_signed(
             &transfer_instruction,
@@ -102,7 +108,7 @@ pub mod messagefi_program {
             ],
             &[],
         )?;
-
+        ctx.accounts.msg_summary.sol_pool_amount += amount;
         ctx.accounts.msg_data.vote_amount += amount;
         // todo: check this formula
         let popularity_old = ctx.accounts.msg_data.popularity;
@@ -187,13 +193,65 @@ pub mod messagefi_program {
     }
 
     // swap mfc coin to sol
-    pub fn swap(ctx: Context<CreateComment>, comment_data: String) -> Result<()> {
-        ctx.accounts.comment_data.data = comment_data;
+    pub fn swap(ctx: Context<SwapData>, amount: u64) -> Result<()> {
+        if ctx.accounts.from_ata.mint != ctx.accounts.msg_summary.mfc_coin_id
+            || ctx.accounts.mfc_pool_acc.mint != ctx.accounts.msg_summary.mfc_coin_id
+        {
+            return Err(MyError::MintInconsistent.into());
+        }
+        if &ctx.accounts.from_ata.owner != ctx.accounts.user.key
+            || ctx.accounts.mfc_pool_acc.owner != ctx.accounts.msg_summary.mfc_swap_pool_owner
+        {
+            return Err(MyError::OwnerInconsistent.into());
+        }
+        let mut sol_swap_out = ctx.accounts.msg_summary.sol_pool_amount
+            / ctx.accounts.msg_summary.mfc_current_supply
+            * amount;
+        let fee = sol_swap_out / 100 * 5;
+        sol_swap_out = sol_swap_out - fee;
+
+        let cpi_accounts = SplTransfer {
+            from: ctx.accounts.from_ata.to_account_info(),
+            to: ctx.accounts.mfc_pool_acc.to_account_info(),
+            authority: ctx.accounts.authority.to_account_info(),
+        };
+        token::transfer(
+            CpiContext::new(ctx.accounts.token_program.to_account_info(), cpi_accounts),
+            amount,
+        )?;
+
+        let summary_acc: &AccountInfo = ctx.accounts.msg_summary.as_ref();
+        // transfer sol to user
+        let transfer_instruction =
+            system_instruction::transfer(&summary_acc.key(), &ctx.accounts.user.key, sol_swap_out);
+        anchor_lang::solana_program::program::invoke_signed(
+            &transfer_instruction,
+            &[
+                summary_acc.clone(),
+                ctx.accounts.user.to_account_info(),
+                ctx.accounts.system_program.to_account_info(),
+            ],
+            &[],
+        )?;
+
+        // transfer sol to fee collector account
+        let transfer_instruction =
+            system_instruction::transfer(&summary_acc.key(), &ctx.accounts.fee_collector.key, fee);
+        anchor_lang::solana_program::program::invoke_signed(
+            &transfer_instruction,
+            &[
+                summary_acc.clone(),
+                ctx.accounts.fee_collector.to_account_info(),
+                ctx.accounts.system_program.to_account_info(),
+            ],
+            &[],
+        )?;
         msg!(
-            "swap mfc to sol msg_id:{}, comment data: {}, user_key:{}",
-            ctx.accounts.msg_data.msg_id,
-            ctx.accounts.comment_data.data,
-            ctx.accounts.user.key
+            "swap mfc to sol user:{}, in mfc: {}, out sol:{}, fee sol:{}",
+            ctx.accounts.user.key,
+            amount,
+            sol_swap_out,
+            fee,
         );
         Ok(())
     }
@@ -201,11 +259,13 @@ pub mod messagefi_program {
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
-    #[account(init, payer = user, space = 8 + 1 + 8 + 32 + 8 * 9, seeds = [b"summary"], bump)]
+    #[account(init, payer = user, space = 8 + 1 + 8 + 32 + 8 * 10 + 32 + 8, seeds = [b"summary"], bump)]
     pub msg_summary: Account<'info, MsgSummaryData>,
     /// CHECK:
     #[account(init, payer = user, space = 0, seeds = [b"feecollector"], bump)]
     pub fee_collector: AccountInfo<'info>,
+    #[account(mut)]
+    pub mfc_swap_pool: Account<'info, TokenAccount>,
     #[account(mut)]
     pub user: Signer<'info>,
     pub token_program: Box<InterfaceAccount<'info, Mint>>,
@@ -267,6 +327,9 @@ pub struct MsgSummaryData {
     pub global_competition_id: u64,
     pub competition_period: i64,
     pub round_start_time: i64,
+    pub mfc_current_supply: u64,
+    pub mfc_swap_pool_owner: Pubkey,
+    pub sol_pool_amount: u64,
 }
 
 #[account]
@@ -344,6 +407,25 @@ pub struct WithdrawRewardData<'info> {
     pub token_program: Box<InterfaceAccount<'info, Mint>>,
     #[account(mut)]
     pub to_ata: Account<'info, TokenAccount>,
+    /// CHECK:
+    pub authority: AccountInfo<'info>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct SwapData<'info> {
+    #[account(mut)]
+    pub from_ata: Account<'info, TokenAccount>,
+    #[account(mut)]
+    pub mfc_pool_acc: Account<'info, TokenAccount>,
+    #[account(mut, seeds = [b"summary"], bump)]
+    pub msg_summary: Account<'info, MsgSummaryData>,
+    pub token_program: Program<'info, Token>,
+    /// CHECK:
+    #[account(mut, seeds = [b"feecollector"], bump)]
+    pub fee_collector: AccountInfo<'info>,
     /// CHECK:
     pub authority: AccountInfo<'info>,
     #[account(mut)]

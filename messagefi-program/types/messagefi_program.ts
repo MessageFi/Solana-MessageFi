@@ -16,6 +16,11 @@ export type MessagefiProgram = {
           "isSigner": false
         },
         {
+          "name": "mfcSwapPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "user",
           "isMut": true,
           "isSigner": true
@@ -171,13 +176,38 @@ export type MessagefiProgram = {
       "name": "withdrawRewords",
       "accounts": [
         {
-          "name": "commentData",
+          "name": "msgData",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "msgData",
+          "name": "msgSummary",
           "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "roundData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "voteData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "toAta",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -191,24 +221,39 @@ export type MessagefiProgram = {
           "isSigner": false
         }
       ],
-      "args": [
-        {
-          "name": "commentData",
-          "type": "string"
-        }
-      ]
+      "args": []
     },
     {
       "name": "swap",
       "accounts": [
         {
-          "name": "commentData",
+          "name": "fromAta",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "msgData",
+          "name": "mfcPoolAcc",
           "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "msgSummary",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "feeCollector",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -224,8 +269,8 @@ export type MessagefiProgram = {
       ],
       "args": [
         {
-          "name": "commentData",
-          "type": "string"
+          "name": "amount",
+          "type": "u64"
         }
       ]
     }
@@ -323,6 +368,18 @@ export type MessagefiProgram = {
           {
             "name": "roundStartTime",
             "type": "i64"
+          },
+          {
+            "name": "mfcCurrentSupply",
+            "type": "u64"
+          },
+          {
+            "name": "mfcSwapPoolOwner",
+            "type": "publicKey"
+          },
+          {
+            "name": "solPoolAmount",
+            "type": "u64"
           }
         ]
       }
@@ -363,6 +420,14 @@ export type MessagefiProgram = {
           {
             "name": "amount",
             "type": "u64"
+          },
+          {
+            "name": "popularity",
+            "type": "u64"
+          },
+          {
+            "name": "hasWithdraw",
+            "type": "bool"
           }
         ]
       }
@@ -407,6 +472,41 @@ export type MessagefiProgram = {
       "code": 6002,
       "name": "NewCompetitionNotStarted",
       "msg": "new competition not stated"
+    },
+    {
+      "code": 6003,
+      "name": "CompetitionHasntEnded",
+      "msg": "competition hasn't ended"
+    },
+    {
+      "code": 6004,
+      "name": "CompetitionIdNotMatched",
+      "msg": "competition id not matched"
+    },
+    {
+      "code": 6005,
+      "name": "MessageNotRankFirst",
+      "msg": "message not rank first"
+    },
+    {
+      "code": 6006,
+      "name": "RewardAlreadyWithdraw",
+      "msg": "reward already withdraw"
+    },
+    {
+      "code": 6007,
+      "name": "TokenAuthorityNotMatched",
+      "msg": "token authority not matched"
+    },
+    {
+      "code": 6008,
+      "name": "MintInconsistent",
+      "msg": "mint inconsistent"
+    },
+    {
+      "code": 6009,
+      "name": "OwnerInconsistent",
+      "msg": "owner inconsistent"
     }
   ]
 };
@@ -429,6 +529,11 @@ export const IDL: MessagefiProgram = {
           "isSigner": false
         },
         {
+          "name": "mfcSwapPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "user",
           "isMut": true,
           "isSigner": true
@@ -584,13 +689,38 @@ export const IDL: MessagefiProgram = {
       "name": "withdrawRewords",
       "accounts": [
         {
-          "name": "commentData",
+          "name": "msgData",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "msgData",
+          "name": "msgSummary",
           "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "roundData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "voteData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "toAta",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -604,24 +734,39 @@ export const IDL: MessagefiProgram = {
           "isSigner": false
         }
       ],
-      "args": [
-        {
-          "name": "commentData",
-          "type": "string"
-        }
-      ]
+      "args": []
     },
     {
       "name": "swap",
       "accounts": [
         {
-          "name": "commentData",
+          "name": "fromAta",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "msgData",
+          "name": "mfcPoolAcc",
           "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "msgSummary",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "feeCollector",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -637,8 +782,8 @@ export const IDL: MessagefiProgram = {
       ],
       "args": [
         {
-          "name": "commentData",
-          "type": "string"
+          "name": "amount",
+          "type": "u64"
         }
       ]
     }
@@ -736,6 +881,18 @@ export const IDL: MessagefiProgram = {
           {
             "name": "roundStartTime",
             "type": "i64"
+          },
+          {
+            "name": "mfcCurrentSupply",
+            "type": "u64"
+          },
+          {
+            "name": "mfcSwapPoolOwner",
+            "type": "publicKey"
+          },
+          {
+            "name": "solPoolAmount",
+            "type": "u64"
           }
         ]
       }
@@ -776,6 +933,14 @@ export const IDL: MessagefiProgram = {
           {
             "name": "amount",
             "type": "u64"
+          },
+          {
+            "name": "popularity",
+            "type": "u64"
+          },
+          {
+            "name": "hasWithdraw",
+            "type": "bool"
           }
         ]
       }
@@ -820,6 +985,41 @@ export const IDL: MessagefiProgram = {
       "code": 6002,
       "name": "NewCompetitionNotStarted",
       "msg": "new competition not stated"
+    },
+    {
+      "code": 6003,
+      "name": "CompetitionHasntEnded",
+      "msg": "competition hasn't ended"
+    },
+    {
+      "code": 6004,
+      "name": "CompetitionIdNotMatched",
+      "msg": "competition id not matched"
+    },
+    {
+      "code": 6005,
+      "name": "MessageNotRankFirst",
+      "msg": "message not rank first"
+    },
+    {
+      "code": 6006,
+      "name": "RewardAlreadyWithdraw",
+      "msg": "reward already withdraw"
+    },
+    {
+      "code": 6007,
+      "name": "TokenAuthorityNotMatched",
+      "msg": "token authority not matched"
+    },
+    {
+      "code": 6008,
+      "name": "MintInconsistent",
+      "msg": "mint inconsistent"
+    },
+    {
+      "code": 6009,
+      "name": "OwnerInconsistent",
+      "msg": "owner inconsistent"
     }
   ]
 };

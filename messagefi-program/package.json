@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "build-program": "anchor build && cp target/types/messagefi_program.ts ./types",
+        "build-program": "anchor build && cp target/types/messagefi_program.ts ./types && cp target/sbf-solana-solana/release/messagefi_program.so ./config/deploy",
         "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
         "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
     },

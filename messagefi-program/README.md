@@ -1,10 +1,5 @@
 # messagefi-program
 ## preinstall
-````shell
-anchor build
-cp target/types/messagefi_program.ts ./types
-````
-or
 ```shell
 npm run build-program
 ```

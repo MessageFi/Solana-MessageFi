@@ -232,52 +232,114 @@ there are some test case in anchor test:
 * airdrop token
 * create MFC token
 * initialized messagefi program
+* create competition round
 * create message
 * vote 1000000000 lamports for this msg
-* add comments
+* add comments for a message
+* todo: add e2e test for withdraw_rewords and swap api
 ```shell
 anchor test
 ```
 test output:
 ```text
+Your counter address tMfmx7gwhaUJ96uLZQeWoxmAhVg54i5LLQhRioduRQg
+Your wallet address 7dMmVQh6yT7WwEWqVZ4DjpArSuaC75KhcmhugUMw6fsD
+
+
   messagefi-program
 payer balance:  1000000000
-    ✔ payer airdrop (268ms)
+    ✔ payer airdrop (209ms)
 create MFC token!111111111 
-mint token account:  C4BfmmkQMautVC419tXAwWpVvkrDvGgA7uHuZ813Regn
-    ✔ create MFC token! (464ms)
-Your transaction signature 2WqabjiYmA94agpkUHB6PZVuJahsM1BG4mxRgg7Q2JUrkcwqbrfS2X8UN2mCCihbwG2T5dcZMNqj61QjnqnoG3XQ
+mint token account:  DmFq1sKzgW7bhSVY7F4nefJ9ZbYuGev3jk8qgS1HgtAN
+    ✔ create MFC token! (946ms)
+Your transaction signature 2c8CHfeYLn7aTeCqqi6MwgWt3PoMcg2mqL1uJHQ5qcQEm6D8dQc5bXn8KE8AoVTw7Dky1SWoZKg3okD6zVivLeo8
 msg summary account state:  {
   isInitialized: true,
   msgId: <BN: 0>,
-  mfcCoinId: PublicKey [PublicKey(C4BfmmkQMautVC419tXAwWpVvkrDvGgA7uHuZ813Regn)] {
-    _bn: <BN: a4415c8bc18f10107450d79276b59beb49a0bbec1577f38c4e5b3b98786adcd7>
-  }
+  mfcCoinId: PublicKey [PublicKey(DmFq1sKzgW7bhSVY7F4nefJ9ZbYuGev3jk8qgS1HgtAN)] {
+    _bn: <BN: bda2908a6f8307fa4e4685250bb89475420cdfc199cc5d8a83c6486653fae523>
+  },
+  totalRewardsPool: <BN: c7d713b49da0000>,
+  voteFeeRate: <BN: 1f4>,
+  rewardsFeeRate: <BN: 32>,
+  rateToCreator: <BN: 1f4>,
+  rewardsReduceRate: <BN: 7d0>,
+  rewardsReduceRound: <BN: 64>,
+  globalCompetitionId: <BN: 1>,
+  competitionPeriod: <BN: 15180>,
+  roundStartTime: <BN: 652c0d8e>,
+  mfcCurrentSupply: <BN: 0>,
+  mfcSwapPoolOwner: PublicKey [PublicKey(D8uZbVL5iMhyyJiDCscZNY2ADPcH9aoUicmqNvViKY8r)] {
+    _bn: <BN: b452bda4cc8448527fcb2983ec58ecbd4c24f39bd29d03365ebaa881599a58c3>
+  },
+  solPoolAmount: <BN: 0>
 }
-    ✔ initialized messagefi program! (478ms)
+    ✔ initialized messagefi program! (482ms)
+Your transaction signature 2UiPrhWK1gfxp8Ddwqh11Pee1P5RZaw7cPpXeNqEFriTYXv5LcaviBPb4JVj4auvLvDAgw5HfXSKb1XbWNE7L9xz
+create competition round account state:  {
+  competitionId: <BN: 2>,
+  buildCount: <BN: 0>,
+  rewards: <BN: aa87bee538000>,
+  totalPopularity: <BN: 0>,
+  roundStartTime: <BN: 652c0d8e>,
+  roundEndTime: <BN: 652d5f0e>,
+  topPopularityMsgId: <BN: 0>,
+  topPopularity: <BN: 0>
+}
+    ✔ create competition round (468ms)
 summaryStatusAccountBefore["msgId"]:  <Buffer 01 00 00 00 00 00 00 00>
-creat msg! Your transaction signature 3PmjDHW2jLPwvFBC1yjTUdEJaiv7pHZFSPs41WT6M8Jh2uh4vjC9kHtzhZKKtKtU1xMKi7TzZ3sMHApauYAxsvgb
+creat msg! Your transaction signature 5eoBuhZxC1kFb7tDV34o3aHeY163uE6c9QVjXCArRs3vNXqzubvRdubnxknzhEFLNSkUmR4xGSmzgQ1BqKbLcScs
 msg summary account state:  {
   isInitialized: true,
   msgId: <BN: 1>,
-  mfcCoinId: PublicKey [PublicKey(C4BfmmkQMautVC419tXAwWpVvkrDvGgA7uHuZ813Regn)] {
-    _bn: <BN: a4415c8bc18f10107450d79276b59beb49a0bbec1577f38c4e5b3b98786adcd7>
-  }
+  mfcCoinId: PublicKey [PublicKey(DmFq1sKzgW7bhSVY7F4nefJ9ZbYuGev3jk8qgS1HgtAN)] {
+    _bn: <BN: bda2908a6f8307fa4e4685250bb89475420cdfc199cc5d8a83c6486653fae523>
+  },
+  totalRewardsPool: <BN: c7d713b49da0000>,
+  voteFeeRate: <BN: 1f4>,
+  rewardsFeeRate: <BN: 32>,
+  rateToCreator: <BN: 1f4>,
+  rewardsReduceRate: <BN: 7d0>,
+  rewardsReduceRound: <BN: 64>,
+  globalCompetitionId: <BN: 2>,
+  competitionPeriod: <BN: 15180>,
+  roundStartTime: <BN: 652c0d8e>,
+  mfcCurrentSupply: <BN: aa87bee538000>,
+  mfcSwapPoolOwner: PublicKey [PublicKey(D8uZbVL5iMhyyJiDCscZNY2ADPcH9aoUicmqNvViKY8r)] {
+    _bn: <BN: b452bda4cc8448527fcb2983ec58ecbd4c24f39bd29d03365ebaa881599a58c3>
+  },
+  solPoolAmount: <BN: 0>
 }
-msg account state:  { msgId: <BN: 1>, data: 'my first msg', voteAmount: <BN: 0> }
+msg account state:  {
+  msgId: <BN: 1>,
+  competitionId: <BN: 2>,
+  data: 'my first msg',
+  voteAmount: <BN: 0>,
+  popularity: <BN: 0>
+}
 
 start vote 1000000000 lamports for this msg!=============
-vote msg! Your transaction signature MEJ9wgTpyFZqBAnirMf9ff84zTZ7SYJzW6ndEqUPdQD2ZpXCYMPqc9v6RKenz2w8gH7JptF6zyw6uWd1y48igXG
-msg account state after vote:  { msgId: <BN: 1>, data: 'my first msg', voteAmount: <BN: 3b9aca00> } total vote num:  1000000000
-vote account state:  { amount: <BN: 3b9aca00> } account:  F6AiUmVT2TjCU2vK4z1wjqfAkV4TDDQ8EPcTqqJS9MWa ' vote number:  1000000000
+vote msg! Your transaction signature 4DjTxbo8dJQjE1UaeK6ZcNPS5cVwVyka2tXEVveHTGNEPBXtZ91njepHnExV86KQdvxvSgWw3ZPUeFccHa8vhQoq
+msg account state after vote:  {
+  msgId: <BN: 1>,
+  competitionId: <BN: 2>,
+  data: 'my first msg',
+  voteAmount: <BN: 3b9aca00>,
+  popularity: <BN: 174876e800>
+} total vote num:  1000000000
+vote account state:  {
+  amount: <BN: 3b9aca00>,
+  popularity: <BN: 174876e800>,
+  hasWithdraw: false
+} account:  F6AiUmVT2TjCU2vK4z1wjqfAkV4TDDQ8EPcTqqJS9MWa ' vote number:  1000000000
 
 start comment for msgId: 1 =============
-comment msg! Your transaction signature 3kAhjJ9TjRyHtY8UFc3rYXBCiMum4sBQPs2ZWXgPJY9FAa1itgGh2tRKYc6wnEBfhsitf2sJFDVYZV8EhHzNGgwF
+comment msg! Your transaction signature 43Q6okKPLYM9fPWVkKmj1MsTxrhd4pRZ9Gh1yJVj6k3ZNPA15H66jwk9qEkesmbHsfNFRD9jCY3JaibjPNeS8Wug
 comment account state:  { data: 'Good message!' }
-    ✔ creat msg! (1414ms)
+    ✔ creat msg! (1407ms)
 
 
-  4 passing (3s)
+  5 passing (4s)
 
-✨  Done in 6.52s.
+✨  Done in 5.15s.
 ```

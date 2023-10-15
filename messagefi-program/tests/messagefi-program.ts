@@ -8,6 +8,7 @@ import {
   mintTo,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
+import { PublicKey } from "@solana/web3.js";
 
 describe("messagefi-program", () => {
   // Configure the client to use the local cluster.
@@ -30,6 +31,18 @@ describe("messagefi-program", () => {
   console.log("Your wallet address", user.toBase58());
   let mint = new web3.Keypair().publicKey;
   const payer = new web3.Keypair();
+  let [feeCollectorAccount] = anchor.web3.PublicKey.findProgramAddressSync(
+    [Buffer.from("feecollector")],
+    // [],
+    program.programId
+  );
+  const mfcSwapPool = new web3.Keypair();
+  let mfcSwapPoolAta: PublicKey;
+
+  let [competitionRoundAccount] = anchor.web3.PublicKey.findProgramAddressSync(
+    [Buffer.from("rounddat"), new BN(2).toBuffer("le", 8)],
+    program.programId
+  );
 
   it("payer airdrop", async () => {
     let sig = await program.provider.connection.requestAirdrop(
@@ -55,6 +68,14 @@ describe("messagefi-program", () => {
     );
     console.log("create MFC token!111111111 ");
     console.log("mint token account: ", mint.toBase58());
+
+    // Create associated token accounts for the new accounts
+    mfcSwapPoolAta = await createAssociatedTokenAccount(
+      program.provider.connection,
+      payer,
+      mint,
+      mfcSwapPool.publicKey
+    );
   });
 
   it("initialized messagefi program!", async () => {
@@ -63,6 +84,8 @@ describe("messagefi-program", () => {
       .initialize()
       .accounts({
         msgSummary: summaryAccount,
+        feeCollector: feeCollectorAccount,
+        mfcSwapPool: mfcSwapPoolAta,
         user,
         tokenProgram: mint,
         systemProgram: anchor.web3.SystemProgram.programId,
@@ -75,6 +98,29 @@ describe("messagefi-program", () => {
       summaryAccount
     );
     console.log("msg summary account state: ", summaryStatusAccount);
+  });
+
+  it("create competition round", async () => {
+    // Add your test here.
+    const tx = await program.methods
+      .createCompetitionRound()
+      .accounts({
+        msgSummary: summaryAccount,
+        roundData: competitionRoundAccount,
+        user,
+        systemProgram: anchor.web3.SystemProgram.programId,
+      })
+      .rpc();
+    console.log("Your transaction signature", tx);
+
+    // Fetch the state struct from the network.
+    const competitionRoundState = await program.account.roundData.fetch(
+      competitionRoundAccount
+    );
+    console.log(
+      "create competition round account state: ",
+      competitionRoundState
+    );
   });
 
   it("creat msg!", async () => {
@@ -103,6 +149,7 @@ describe("messagefi-program", () => {
       .accounts({
         msgData: msgAccount,
         msgSummary: summaryAccount,
+        roundData: competitionRoundAccount,
         user: user,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
@@ -132,6 +179,7 @@ describe("messagefi-program", () => {
         voteData: voteAccount,
         msgData: msgAccount,
         msgSummary: summaryAccount,
+        roundData: competitionRoundAccount,
         user: user,
         systemProgram: anchor.web3.SystemProgram.programId,
       })

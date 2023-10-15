@@ -228,7 +228,7 @@ pub struct SwapData<'info> {
 }
 ```
 ## E2E test
-there are some test case in anchor test:
+there are some test case in [anchor test file](./tests/messagefi-program.ts):
 * airdrop token
 * create MFC token
 * initialized messagefi program
